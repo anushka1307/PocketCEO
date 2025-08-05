@@ -2,27 +2,28 @@ import Ava from "../assets/Ava.png";
 import Slider from "react-slick";
 import Blaze from "../assets/Blaze.png";
 import Otis from "../assets/Otis.png";
+import Navbar from "../components/Navbar";
 
 const personas = [
-    {
-      name: "Ava",
-      title: "The Visionary",
-      desc: "Your AI Co-Founder. Always on. Always brilliant.",
-      img: Ava,
-    },
-    {
-      name: "Blaze",
-      title: "The Executioner",
-      desc: "Turns deadlines into dust. No fluff, just results.",
-      img: Blaze,
-    },
-    {
-      name: "Otis",
-      title: "The Strategist",
-      desc: "Brains, numbers, and a plan for every pivot.",
-      img: Otis,
-    },
-  ];
+  {
+    name: "Ava",
+    title: "The Visionary",
+    desc: "Trends don’t surprise her, she predicts them.",
+    img: Ava,
+  },
+  {
+    name: "Blaze",
+    title: "The Executioner",
+    desc: "Turns deadlines into dust. No fluff, just results.",
+    img: Blaze,
+  },
+  {
+    name: "Otis",
+    title: "The Strategist",
+    desc: "Brains, numbers, and a plan for every pivot.",
+    img: Otis,
+  },
+];
 
 export default function LandingPage() {
   const settings = {
@@ -38,31 +39,39 @@ export default function LandingPage() {
 
   return (
     <div className="bg-white-50 min-h-screen w-full text-gray-800">
+      <Navbar />
       {/* Hero Section */}
-      <section className="flex flex-col md:flex-row items-center justify-between px-6 md:px-40 py-20">
-        <div className="max-w-1xl">
-          <h1 className="text-5xl md:text-9xl font-medium leading-tight mb-4">
-            Meet Ava: <br/> The Visionary
-          </h1>
-          <p className="text-lg mb-8">
-            Your AI Co-Founder. Always on. Always brilliant.
-          </p>
-          <div className="flex gap-4">
-            <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full text-lg font-semibold">
-              Get Started
-            </button>
-            <button className="border border-purple-500 text-purple-600 px-6 py-3 rounded-full text-lg font-semibold">
-              Try Demo
-            </button>
-          </div>
-        </div>
-        <div className="mt-10 md:mt-0">
-          <img
-            src={Ava} // replace with your avatar
-            alt="3D Avatar"
-            className="w-150 h-150 object-cover"
-          />
-        </div>
+      <section className="px-6 md:px-40 py-20">
+        <Slider {...settings}>
+          {personas.map((persona, idx) => (
+            <div
+              key={idx}
+              className="!flex flex-col md:!flex-row md:justify-between md:gap-55 w-full"
+            >
+              <div className="max-w-1xl">
+                <h1 className="text-5xl md:text-9xl font-medium leading-tight mb-4">
+                  Meet {persona.name}: <br /> {persona.title}
+                </h1>
+                <p className="text-lg mb-8">{persona.desc}</p>
+                <div className="flex gap-4">
+                  <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full text-lg font-semibold">
+                    Get Started
+                  </button>
+                  <button className="border border-purple-500 text-purple-600 px-6 py-3 rounded-full text-lg font-semibold">
+                    Try Demo
+                  </button>
+                </div>
+              </div>
+              <div className="mt-10 md:mt-0">
+                <img
+                  src={persona.img} // replace with your avatar
+                  alt="3D Avatar"
+                  className="w-150 h-150 object-cover"
+                />
+              </div>
+            </div>
+          ))}
+        </Slider>
       </section>
 
       {/* Features Section */}
