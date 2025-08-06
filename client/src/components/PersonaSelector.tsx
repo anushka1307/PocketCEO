@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type Persona = {
   name: string;
@@ -31,12 +32,27 @@ const personas: Persona[] = [
 const PersonaSelector: React.FC = () => {
   const [selected, setSelected] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
+
+  const handleSelect = (persona: Persona) => {
+    setSelected(persona.name);
+    localStorage.setItem("selectedPersona", persona.name.toLowerCase());
+
+    // ⛳ Route to correct dashboard
+    if (persona.name === "Ava") {
+      navigate("/blaze-dashboard");
+    } else if (persona.name === "Blaze") {
+      navigate("/blaze-dashboard");
+    } else if (persona.name === "Otis") {
+      navigate("/otis-dashboard");
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 p-6">
       {/* Main cards container */}
-      <div className="flex justify-center items-center gap-8 mb-12">
-        {personas.map((persona, index) => (
+      <div className="flex justify-center items-center gap-8 mb-12 flex-wrap">
+        {personas.map((persona) => (
           <div
             key={persona.name}
             className={`cursor-pointer bg-white rounded-3xl p-8 text-center transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 ${
@@ -49,46 +65,43 @@ const PersonaSelector: React.FC = () => {
               flexDirection: "column",
               justifyContent: "space-between"
             }}
-            onClick={() => setSelected(persona.name)}
+            onClick={() => handleSelect(persona)}
           >
-            {/* Emoji container with background */}
+            {/* Emoji container */}
             <div className="flex-1 flex items-center justify-center">
               <div className="text-8xl mb-4 p-4 rounded-2xl bg-gray-50">
                 {persona.emoji}
               </div>
             </div>
-            
+
             {/* Content section */}
             <div className="flex-shrink-0">
               <h2 className="text-2xl font-bold text-gray-800 mb-3">{persona.name}</h2>
-              
-              {/* Placeholder lines like in the image */}
               <div className="space-y-2 mb-4">
                 <div className="h-2 bg-gray-200 rounded-full w-full"></div>
                 <div className="h-2 bg-gray-200 rounded-full w-4/5 mx-auto"></div>
                 <div className="h-2 bg-gray-200 rounded-full w-3/5 mx-auto"></div>
               </div>
-              
               <p className="text-gray-600 text-sm font-medium">{persona.tagline}</p>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Pagination dots */}
+      {/* Pagination dots (optional) */}
       <div className="flex justify-center space-x-3 mb-8">
         {personas.map((_, index) => (
           <button
             key={index}
             className={`w-3 h-3 rounded-full transition-all duration-200 ${
-              index === 0 ? "bg-gray-600" : "bg-gray-300"
+              index === currentIndex ? "bg-gray-600" : "bg-gray-300"
             }`}
             onClick={() => setCurrentIndex(index)}
           />
         ))}
       </div>
 
-      {/* Selection feedback */}
+      {/* Feedback */}
       {selected && (
         <div className="mt-4 px-6 py-3 bg-white rounded-full shadow-md">
           <span className="text-lg text-gray-700 font-medium">

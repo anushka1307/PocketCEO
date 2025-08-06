@@ -1,5 +1,6 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { FaVideo, FaEye, FaSuitcase, FaCamera } from "react-icons/fa";
+import Ava from "../assets/Ava.png";
 
 const trendData = [
   { name: "Jan", trend: 25 },
@@ -29,7 +30,7 @@ const AvaDashboard = () => {
             </ul>
           </div>
           <div className="flex items-center space-x-3 mt-10">
-            <img src="/ava.png" alt="Ava" className="w-8 h-8 rounded-full" />
+            <img src={Ava} alt="Ava" className="w-8 h-8 rounded-full" />
             <div>
               <p className="text-sm font-semibold">Ava</p>
               <p className="text-xs text-gray-400">Visionary</p>
@@ -52,7 +53,7 @@ const AvaDashboard = () => {
 
           {/* Insight */}
           <div className="bg-[#15151c] p-6 rounded-2xl col-span-1 flex flex-col justify-between items-center text-center">
-            <img src="/ava.png" alt="Ava" className="w-20 h-20 rounded-full mb-4" />
+            <img src= {Ava} alt="Ava" className="w-20 h-20 rounded-full mb-4" />
             <p className="text-sm text-gray-300">Let’s disrupt the industry and turn some heads ✨</p>
           </div>
 

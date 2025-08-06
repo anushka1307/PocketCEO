@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 const Navbar = () => {
   return (
     <header className="w-full fixed top-0 left-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
@@ -20,7 +19,7 @@ const Navbar = () => {
         </nav>
         <div>
           <Link
-            to="/login"
+            to="/auth"
             className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
           >
             Login
