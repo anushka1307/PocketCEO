@@ -17,7 +17,7 @@ app.use(cors(
 
 const PORT = 4000;
 
-const uri = process.env.Mongo_URI;
+const uri = process.env.MONGO_URI;
 
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {

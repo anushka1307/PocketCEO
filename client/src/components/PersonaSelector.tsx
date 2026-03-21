@@ -40,7 +40,7 @@ const PersonaSelector: React.FC = () => {
 
     // ⛳ Route to correct dashboard
     if (persona.name === "Ava") {
-      navigate("/blaze-dashboard");
+      navigate("/ava-dashboard");
     } else if (persona.name === "Blaze") {
       navigate("/blaze-dashboard");
     } else if (persona.name === "Otis") {
