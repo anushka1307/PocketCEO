@@ -4,6 +4,9 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 
 const startupRoutes = require("./routes/startup.routes");
+const chatRoutes = require("./routes/chat.routes");
+const dashboardRoutes = require("./routes/dashboard.routes");
+const conversationRoutes = require("./routes/conversation.routes");
 
 const app = express();
 
@@ -23,5 +26,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/startups", startupRoutes);
+app.use("/api/chat", chatRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/conversations", conversationRoutes);
 
 module.exports = app;
