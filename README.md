@@ -75,3 +75,90 @@ REACT_APP_OPENAI_KEY=your-key-here
 
 # /server/.env
 OPENAI_API_KEY=your-key-here
+
+```
+
+# Pocket CEO Backend README
+
+## Overview
+
+This is the backend for Pocket CEO, an AI-powered startup co-founder platform.
+
+The current backend is focused on the MVP foundation:
+- saving a startup profile
+- connecting to MongoDB
+- chatting with the first AI role: CSO
+- storing conversations
+- storing dashboard-style AI insights
+
+Right now, the backend supports:
+- Startup profile creation and updates
+- CSO chat through Groq
+- Structured AI responses
+- Conversation storage
+- Dashboard insight storage
+
+This is the first working version of the AI founding team backend.
+
+---
+
+## What We Have Built So Far
+
+### Completed backend features
+- Express server setup
+- MongoDB connection with Mongoose
+- Environment variable setup with dotenv
+- Startup profile API
+- CSO AI chat endpoint
+- Groq integration
+- Conversation model and message storage
+- Agent insight storage for dashboard data
+
+### Current MVP backend flow
+1. User creates a startup profile
+2. Startup data is saved in MongoDB
+3. User sends a message to the CSO
+4. Backend loads startup context
+5. Backend sends the prompt + user message to Groq
+6. Groq returns structured JSON
+7. Backend stores:
+   - user message
+   - assistant response
+   - dashboard insight
+8. Backend sends the result back to the frontend
+
+---
+
+## Current Folder Structure
+
+```text
+server/
+  src/
+    config/
+      db.js
+    controllers/
+      startup.controller.js
+      chat.controller.js
+    models/
+      Startup.js
+      Conversation.js
+      Message.js
+      AgentInsight.js
+    prompts/
+      cso.prompt.js
+      cmo.prompt.js
+      cfo.prompt.js
+    routes/
+      startup.routes.js
+      chat.routes.js
+    services/
+      groq.service.js
+      agent.service.js
+    utils/
+      parseJson.js
+    app.js
+    server.js
+  .env
+  .gitignore
+  package.json
+  README.md
