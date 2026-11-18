@@ -1,164 +1,103 @@
-# 🚀 Pocket CEO
+# Pocket CEO
 
-> Your AI-powered startup co-founder for Gen Z solopreneurs.
+An AI co-founder workspace for solo founders. You describe your startup once, then chat with three AI executives, each focused on one part of the business. Every reply also updates that executive's dashboard with recommendations, risks and next actions.
 
-![Made with React](https://img.shields.io/badge/Frontend-React-blue?style=flat-square)
-![Node.js](https://img.shields.io/badge/Backend-Node.js-green?style=flat-square)
-![OpenAI](https://img.shields.io/badge/AI-OpenAI-lightgrey?style=flat-square)
-![Firebase](https://img.shields.io/badge/Auth-Firebase-orange?style=flat-square)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+| Persona | Role | Focus |
+|---|---|---|
+| Otis | CSO | Strategy |
+| Ava | CMO | Marketing |
+| Blaze | CFO | Finance |
 
----
+## How it works
 
-## ✨ Overview
+1. You create a startup profile (name, problem, target customer, industry), which is saved in MongoDB.
+2. You send a message to one of the executives.
+3. The backend loads your startup profile and that executive's system prompt, plus the last 10 messages of your conversation.
+4. The model (Llama 3.3 70B through the Groq API) is asked to return structured JSON.
+5. The backend splits the JSON into a chat reply and dashboard insights, and stores the message, the reply and the insights in MongoDB.
+6. The frontend shows the reply and refreshes the executive's dashboard.
 
-**Pocket CEO** is your virtual co-founder—an AI companion that helps Gen Z solopreneurs plan, validate, and execute their startup ideas.
+### Prompt design
 
-Built with a blend of:
-- 💬 GPT-powered chat (like a co-founder who never sleeps)
-- 🧭 Smart task planner
-- 🧍 Customizable AI personas
-- 📊 Progress tracking (with dopamine-inducing charts)
+Each executive has its own system prompt (`server/src/prompts/`). The prompts:
 
----
+- feed in the startup's profile, so advice is specific to that company
+- keep each executive inside its own area
+- separate assumptions from facts
+- ask the user to clarify vague input instead of guessing
+- require a fixed JSON shape, so replies can drive the dashboards
 
-## 🧠 Features
+## Tech stack
 
-- 🧑‍💻 **AI Chat:** Talk to your co-founder, get validation, and plan your week.
-- 🎭 **Persona Selector:** Choose the vibe of your co-founder (Ava, Blaze, Otis...)
-- 📆 **Smart Planner:** AI-generated task lists based on your startup goals.
-- 🔐 **User Auth:** Secure login via Firebase Authentication.
-- ☁️ **Cloud-Based:** User data stored with Firestore for persistence.
+| Layer | Tech |
+|---|---|
+| Frontend | React 19, TypeScript, Vite, Tailwind CSS, React Router, Recharts |
+| Backend | Node.js, Express 5, Mongoose, Helmet |
+| AI | Groq API, `llama-3.3-70b-versatile` |
+| Database | MongoDB |
 
----
+## API
 
-## 🛠 Tech Stack
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/startups` | Create a startup profile |
+| GET | `/api/startups/:id` | Get a startup profile |
+| PATCH | `/api/startups/:id` | Update a startup profile |
+| POST | `/api/chat` | Send a message: `{ startupId, agentRole, message }`, where `agentRole` is `cso`, `cmo` or `cfo` |
+| GET | `/api/conversations/:startupId/:agentRole` | Get the conversation with one executive |
+| GET | `/api/dashboard/:startupId/:agentRole` | Get one executive's dashboard insights |
 
-| Layer        | Tech                        |
-|--------------|-----------------------------|
-| Frontend     | React, Tailwind CSS         |
-| Backend      | Node.js, Express            |
-| AI           | OpenAI GPT-4 API            |
-| Auth         | Firebase Authentication     |
-| DB           | Firebase Firestore / MongoDB (planned) |
-| Hosting      | Vercel (frontend), Render (backend)  |
+## Getting started
 
----
-
-## 🚧 Current Status
-
-- ✅ Folder structure initialized
-- ✅ GitHub setup + Gitignore best practices
-- ⏳ GPT integration in progress
-- ⏳ Firebase Auth setup
-- ⏳ MVP UI components: Persona Picker, Chat Box, Task Board
-
----
-
-## 🧪 Getting Started
+You need Node.js, a MongoDB database and a Groq API key.
 
 ```bash
-# Clone the repo
 git clone https://github.com/anushka1307/PocketCEO.git
+cd PocketCEO
 
-# Install client dependencies
-cd client
+# Backend
+cd server
 npm install
-
-# Install server dependencies
-cd ../server
-npm install
-
-# Create your .env files
-# /client/.env
-REACT_APP_OPENAI_KEY=your-key-here
-
-# /server/.env
-OPENAI_API_KEY=your-key-here
-
 ```
 
-# Pocket CEO Backend README
+Create `server/.env`:
 
-## Overview
+```
+MONGO_URI=your-mongodb-connection-string
+GROQ_API_KEY=your-groq-api-key
+PORT=5001
+CLIENT_URL=http://localhost:5173
+```
 
-This is the backend for Pocket CEO, an AI-powered startup co-founder platform.
+`GROQ_MODEL` is optional and defaults to `llama-3.3-70b-versatile`. The frontend calls the API at `http://localhost:5001` (`client/src/api/http.ts`), so set `PORT=5001`.
 
-The current backend is focused on the MVP foundation:
-- saving a startup profile
-- connecting to MongoDB
-- chatting with the first AI role: CSO
-- storing conversations
-- storing dashboard-style AI insights
+```bash
+npm run dev        # starts the API on port 5001
 
-Right now, the backend supports:
-- Startup profile creation and updates
-- CSO chat through Groq
-- Structured AI responses
-- Conversation storage
-- Dashboard insight storage
+# Frontend, in a second terminal
+cd client
+npm install
+npm run dev        # opens on http://localhost:5173
+```
 
-This is the first working version of the AI founding team backend.
+Create a startup with `POST /api/startups`, then put its ID in `STARTUP_ID` at the top of the three dashboard components (`client/src/components/*Dashboard.tsx`).
 
----
+## Current status
 
-## What We Have Built So Far
+- Working: startup profiles, chat with all three executives, conversation history, structured insights and dashboards.
+- Login is a placeholder screen for the demo. There is no real authentication yet.
+- The startup ID is set in the frontend code instead of coming from the logged-in user.
 
-### Completed backend features
-- Express server setup
-- MongoDB connection with Mongoose
-- Environment variable setup with dotenv
-- Startup profile API
-- CSO AI chat endpoint
-- Groq integration
-- Conversation model and message storage
-- Agent insight storage for dashboard data
+## Project structure
 
-### Current MVP backend flow
-1. User creates a startup profile
-2. Startup data is saved in MongoDB
-3. User sends a message to the CSO
-4. Backend loads startup context
-5. Backend sends the prompt + user message to Groq
-6. Groq returns structured JSON
-7. Backend stores:
-   - user message
-   - assistant response
-   - dashboard insight
-8. Backend sends the result back to the frontend
-
----
-
-## Current Folder Structure
-
-```text
-server/
-  src/
-    config/
-      db.js
-    controllers/
-      startup.controller.js
-      chat.controller.js
-    models/
-      Startup.js
-      Conversation.js
-      Message.js
-      AgentInsight.js
-    prompts/
-      cso.prompt.js
-      cmo.prompt.js
-      cfo.prompt.js
-    routes/
-      startup.routes.js
-      chat.routes.js
-    services/
-      groq.service.js
-      agent.service.js
-    utils/
-      parseJson.js
-    app.js
-    server.js
-  .env
-  .gitignore
-  package.json
-  README.md
+```
+client/           React + TypeScript frontend
+  src/api/        API calls
+  src/components/ Pages, persona selector and the three dashboards
+  src/hooks/      useAgentDashboard
+server/           Express backend
+  src/prompts/    System prompts for the CSO, CMO and CFO
+  src/services/   Groq calls and the chat workflow
+  src/models/     Startup, Conversation, Message, AgentInsight
+  src/routes/     API routes
+```
